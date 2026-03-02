@@ -1,0 +1,1 @@
+export { metricsController } from './metrics';

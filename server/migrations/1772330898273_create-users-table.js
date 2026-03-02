@@ -32,7 +32,7 @@ export const up = (pgm) => {
       notNull: true 
     },
     deleted_at: {
-      type: 'timestamp with time zone',
+      type: 'timestamp',
       notNull: false
     },
     created_at: { 
@@ -49,6 +49,7 @@ export const up = (pgm) => {
 
   // Indexes for performance
   pgm.createIndex('users', 'email');
+  pgm.createIndex('users', 'email_verification_token');
   
   // Partial index for non-deleted users only
   pgm.createIndex('users', 'email', { 

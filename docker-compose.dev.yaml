@@ -1,0 +1,139 @@
+# Development Infrastructure
+# Run supporting services in Docker, develop client/server locally
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yaml up -d
+#
+# Then run locally:
+#   cd server && npm run dev
+#   cd client && npm run dev
+
+services:
+  # Database
+  postgres:
+    image: postgres:18
+    container_name: job_board_db_dev
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: job_board
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d job_board"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dev
+
+  # Cache & Session Store
+  redis:
+    image: redis:7-alpine
+    container_name: job_board_redis_dev
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_dev_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - dev
+
+  # Metrics Collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: job_board_prometheus_dev
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_dev_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - dev
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Metrics Visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: job_board_grafana_dev
+    ports:
+      - "3002:3000"  # Changed to 3002 to avoid conflict with server
+    volumes:
+      - grafana_dev_data:/var/lib/grafana
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - dev
+    depends_on:
+      - prometheus
+      - loki
+    restart: unless-stopped
+
+  # Log Aggregation
+  loki:
+    image: grafana/loki:latest
+    container_name: job_board_loki_dev
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./observability/loki.yml:/etc/loki/local-config.yaml
+      - loki_dev_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - dev
+    restart: unless-stopped
+
+  # Log Collection
+  promtail:
+    image: grafana/promtail:latest
+    container_name: job_board_promtail_dev
+    volumes:
+      - ./server/logs:/var/log/app:ro
+      - ./observability/promtail.yml:/etc/promtail/promtail.yml:ro
+    command: -config.file=/etc/promtail/promtail.yml
+    networks:
+      - dev
+    depends_on:
+      - loki
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+  redis_dev_data:
+  prometheus_dev_data:
+  grafana_dev_data:
+  loki_dev_data:
+
+networks:
+  dev:
+    name: job_board_dev
+    driver: bridge
+
+# Notes for local development:
+# 1. Server connects to: postgresql://postgres:password@localhost:5432/job_board
+# 2. Server connects to: redis://localhost:6379
+# 3. Server runs on: http://localhost:3000
+# 4. Client runs on: http://localhost:3001
+# 5. Grafana at: http://localhost:3002
+# 6. Prometheus at: http://localhost:9090
+# 7. Loki at: http://localhost:3100

@@ -1,5 +1,12 @@
+# Dependencies
+node_modules/
+
 # Environment files
 .env
 
 # Keep the template
 !.env.example
+
+# Log files
+logs/
+*.log

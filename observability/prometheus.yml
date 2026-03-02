@@ -1,0 +1,44 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'job-board-local'
+    environment: 'development'
+
+# Alerting configuration (optional - for production)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets: ['alertmanager:9093']
+
+rule_files:
+  # - "alerts.yml"
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Job Board API - Development (server running on host)
+  # Use this when running with docker-compose.dev.yaml
+  - job_name: 'job-board-api-dev'
+    static_configs:
+      - targets: ['host.docker.internal:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # Job Board API - Production (server in Docker)
+  # Use this when running with docker-compose.yaml
+  - job_name: 'job-board-api-prod'
+    static_configs:
+      - targets: ['server:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+# Note: Only one of the job-board-api scrape configs will work at a time
+# - dev: server on host (npm run dev)
+# - prod: server in Docker container
+# Failed scrapes are normal and can be ignored
