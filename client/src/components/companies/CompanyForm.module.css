@@ -1,0 +1,168 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Textarea field */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-slate-700);
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--space-2-5) var(--space-3);
+  font-size: var(--text-sm);
+  font-family: inherit;
+  color: var(--color-slate-900);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-slate-300);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-indigo-500);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.textarea.textareaError {
+  border-color: var(--color-red-500);
+}
+
+.textarea::placeholder {
+  color: var(--color-slate-400);
+}
+
+.fieldError {
+  font-size: var(--text-xs);
+  color: var(--color-red-600);
+}
+
+/* Select field */
+.select {
+  width: 100%;
+  padding: var(--space-2-5) var(--space-3);
+  font-size: var(--text-sm);
+  font-family: inherit;
+  color: var(--color-slate-900);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-slate-300);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  padding-right: var(--space-9);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-indigo-500);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.select.selectError {
+  border-color: var(--color-red-500);
+}
+
+/* Logo upload */
+.logoSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.logoPreview {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.logoImage {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  object-fit: cover;
+  border: 1px solid var(--color-slate-200);
+  flex-shrink: 0;
+}
+
+.logoPlaceholder {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-slate-100);
+  border: 1px dashed var(--color-slate-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-slate-400);
+  font-size: var(--text-xs);
+  text-align: center;
+}
+
+.logoUploadButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-indigo-600);
+  background-color: var(--color-indigo-50);
+  border: 1px solid var(--color-indigo-200);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.logoUploadButton:hover {
+  background-color: var(--color-indigo-100);
+}
+
+.logoHint {
+  font-size: var(--text-xs);
+  color: var(--color-slate-500);
+  margin-top: var(--space-1);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}

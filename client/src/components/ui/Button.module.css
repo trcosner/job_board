@@ -48,50 +48,45 @@
 /* Variants */
 .primary {
   background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-  box-shadow: var(--shadow-sm);
+  color: white;
 }
 
 .primary:hover:not(:disabled) {
-  background-color: var(--color-primary-700);
-  box-shadow: var(--shadow-md);
+  background-color: var(--color-primary-800);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .primary:active:not(:disabled) {
-  background-color: var(--color-primary-800);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--color-primary-900);
   transform: translateY(0);
 }
 
 .secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-text-inverse);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--color-accent);
+  color: white;
 }
 
 .secondary:hover:not(:disabled) {
-  background-color: var(--color-secondary-700);
-  box-shadow: var(--shadow-md);
+  background-color: var(--color-accent-700);
   transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .secondary:active:not(:disabled) {
-  background-color: var(--color-secondary-800);
-  box-shadow: var(--shadow-sm);
+  background-color: var(--color-accent-800);
   transform: translateY(0);
 }
 
 .outline {
   background-color: transparent;
   color: var(--color-primary);
-  border-color: var(--color-primary);
+  border-color: var(--color-border);
 }
 
 .outline:hover:not(:disabled) {
   background-color: var(--color-primary-50);
-  border-color: var(--color-primary-700);
-  color: var(--color-primary-700);
+  border-color: var(--color-primary);
 }
 
 .outline:active:not(:disabled) {

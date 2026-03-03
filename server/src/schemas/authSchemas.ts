@@ -30,14 +30,16 @@ export const registerBodySchema = z.object({
     password:passwordSchema,
     firstName: nameSchema,
     lastName: nameSchema,
-    userType: userTypeSchema
-}) satisfies z.ZodType<RegistrationRequestParams>;
+    userType: userTypeSchema,
+    sessionId: z.string().optional() // For session bridging
+}) satisfies z.ZodType<RegistrationRequestParams & { sessionId?: string }>;
 
 // Login body schema (for use with validateBody)
 export const loginBodySchema = z.object({
     email: emailSchema,
-    password: passwordSchema
-}) satisfies z.ZodType<LoginRequestParams>;
+    password: passwordSchema,
+    sessionId: z.string().optional() // For session bridging
+}) satisfies z.ZodType<LoginRequestParams & { sessionId?: string }>;
 
 // Legacy schemas for backward compatibility
 export const registerSchema = z.object({

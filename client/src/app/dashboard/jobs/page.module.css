@@ -1,0 +1,385 @@
+.page {
+  min-height: 100vh;
+  background-color: var(--color-surface-elevated);
+  padding: var(--space-8) var(--space-6);
+}
+
+.container {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+}
+
+/* Header */
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.headerLeft {
+  flex: 1;
+  min-width: 0;
+}
+
+.pageTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.pageSubtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.newJobButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-5);
+  background-color: var(--color-accent-600);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-lg);
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.newJobButton:hover {
+  background-color: var(--color-accent-700);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-5);
+}
+
+.tab {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--color-text-primary);
+}
+
+.tabActive {
+  color: var(--color-accent-600);
+  border-bottom-color: var(--color-accent-600);
+}
+
+.tabCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--space-1);
+  background-color: var(--color-primary-100);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  margin-left: var(--space-2);
+}
+
+.tabActive .tabCount {
+  background-color: var(--color-accent-100);
+  color: var(--color-accent-700);
+}
+
+/* Job table */
+.jobTable {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.jobRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.jobRow:last-child {
+  border-bottom: none;
+}
+
+.jobRow:hover {
+  background-color: var(--color-surface-elevated);
+}
+
+.jobInfo {
+  min-width: 0;
+}
+
+.jobTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.jobTitle:hover {
+  color: var(--color-accent-600);
+  text-decoration: underline;
+}
+
+.jobMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.jobMetaItem {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* Status badge */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+.statusActive {
+  background-color: var(--color-success-100);
+  color: var(--color-success-700);
+  border-color: var(--color-success-500);
+}
+
+.statusDraft {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-600);
+  border-color: var(--color-primary-300);
+}
+
+.statusClosed {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-600);
+  border-color: var(--color-gray-300);
+}
+
+/* Applications count */
+.appCount {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  text-align: right;
+}
+
+.appCountLink {
+  color: var(--color-accent-600);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.appCountLink:hover {
+  text-decoration: underline;
+}
+
+/* Row actions */
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  text-decoration: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.actionLink:hover {
+  background-color: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  border-color: var(--color-primary-300);
+}
+
+.actionLinkDanger:hover {
+  background-color: var(--color-error-50);
+  color: var(--color-error-600);
+  border-color: var(--color-error-500);
+}
+
+.actionLinkSuccess:hover {
+  background-color: var(--color-success-50, #f0fdf4);
+  color: var(--color-success-600, #16a34a);
+  border-color: var(--color-success-500, #22c55e);
+}
+
+.actionIcon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: var(--space-16) var(--space-8);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+}
+
+.emptyTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.emptyText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+/* Spinner / loading */
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent-600);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding-top: var(--space-5);
+}
+
+.pageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.pageButton:hover:not(:disabled) {
+  background-color: var(--color-primary-100);
+  border-color: var(--color-primary-300);
+  color: var(--color-text-primary);
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageButtonActive {
+  background-color: var(--color-accent-600);
+  border-color: var(--color-accent-600);
+  color: #fff;
+}
+
+/* Confirm delete modal overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  padding: var(--space-4);
+}
+
+.modal {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--shadow-2xl);
+}
+
+.modalTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.modalText {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}

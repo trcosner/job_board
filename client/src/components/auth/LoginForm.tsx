@@ -5,15 +5,13 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { SubmitEventHandler, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/Alert';
 import { validateLogin } from '@/lib/validation';
 import { ApiError } from '@/lib/api';
-import { trackEvent } from '@/lib/analytics';
-import { AnalyticsEventName } from '@/types/analytics';
 import styles from './LoginForm.module.css';
 
 export function LoginForm() {
@@ -31,7 +29,7 @@ export function LoginForm() {
   /**
    * Handle form submission
    */
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     
     // Clear previous errors
@@ -45,33 +43,15 @@ export function LoginForm() {
       return;
     }
     
-    // Track login attempt
-    trackEvent(AnalyticsEventName.USER_LOGIN_STARTED, {
-      properties: { method: 'email' }
-    });
-    
     // Submit login
     setLoading(true);
     
     try {
       await login({ email, password });
       
-      // Track successful login
-      trackEvent(AnalyticsEventName.USER_LOGIN_COMPLETED, {
-        properties: { method: 'email' }
-      });
-      
       // Success - AuthContext will redirect
     } catch (error) {
       console.error('Login error:', error);
-      
-      // Track failed login
-      trackEvent(AnalyticsEventName.USER_LOGIN_FAILED, {
-        properties: {
-          method: 'email',
-          errorMessage: error instanceof Error ? error.message : 'Unknown error'
-        }
-      });
       
       if (error instanceof ApiError) {
         setApiError(error.message);

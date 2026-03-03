@@ -66,3 +66,26 @@ export interface JWTPayload {
     iat?: number;
     exp?: number;
 }
+
+/**
+ * Refresh token entity matching the database schema
+ */
+export interface RefreshToken {
+  id: string;
+  token_hash: string;
+  user_id: string;
+  expires_at: Date;
+  revoked_at: Date | null;
+  revoked_by_token_id: string | null;
+  ip_address: string | null;
+  user_agent: string | null;
+  created_at: Date;
+}
+
+export interface CreateRefreshTokenInput {
+  token: string; // Plain token (will be hashed)
+  userId: string;
+  expiresAt: Date;
+  ipAddress?: string;
+  userAgent?: string;
+}

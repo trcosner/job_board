@@ -1,29 +1,35 @@
-import { UserType } from './auth';
+import type { BaseEntity } from './base.js';
+import type { UserType } from './auth.js';
 
-export interface User {
-  id: string;
+/**
+ * User entity matching the database schema
+ */
+export interface User extends BaseEntity {
   email: string;
-  firstName: string;
-  lastName: string;
-  passwordHash: string;
-  userType: UserType;
-  emailVerified: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date; // Made optional for soft deletes
+  password_hash: string;
+  first_name: string;
+  last_name: string;
+  user_type: UserType;
+  email_verified: boolean;
+  email_verification_token: string | null;
+  verification_token_expires_at: Date | null;
+  company_id: string | null;
+  onboarding_completed: boolean;
 }
 
-export interface CreateUserParams {
-  email: string;
-  firstName: string;
-  lastName: string;
-  passwordHash: string;
-  userType: UserType;
-}
+/**
+ * Data for creating a new user
+ */
+export type CreateUserData = Omit<
+  User,
+  'id' | 'created_at' | 'updated_at' | 'deleted_at' | 'email_verified'
+> & {
+  email_verified?: boolean;
+};
 
-export interface UpdateUserParams {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  emailVerified?: boolean;
-}
+/**
+ * Data for updating a user
+ */
+export type UpdateUserData = Partial<
+  Omit<User, 'id' | 'created_at' | 'updated_at' | 'deleted_at' | 'email'>
+>;

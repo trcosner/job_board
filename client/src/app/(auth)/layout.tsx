@@ -16,7 +16,6 @@ export default function AuthLayout({
     <div className={styles.container}>
       <div className={styles.content}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoIcon}>💼</span>
           <span className={styles.logoText}>Job Board</span>
         </Link>
         

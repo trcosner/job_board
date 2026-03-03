@@ -1,12 +1,3 @@
-# Full Stack Production Setup
-# All services in Docker with built images
-#
-# Usage:
-#   docker compose up -d
-#
-# For development with hot reload, use:
-#   docker compose -f docker-compose.dev.yaml up -d
-
 services:
   # Database
   postgres:

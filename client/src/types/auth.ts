@@ -1,3 +1,5 @@
+import type { Company } from './company';
+
 /**
  * Auth Types - Client Side
  * Matching server types from server/src/types/auth.ts
@@ -89,9 +91,15 @@ export interface JWTPayload {
  */
 export interface AuthContextState {
   user: UserProfile | null;
+  /** The employer's company profile, null if not an employer or not yet created */
+  userCompany: Company | null;
+  /** True when the employer has created their company (always true for job seekers) */
+  onboardingComplete: boolean;
   loading: boolean;
   login: (params: LoginRequestParams) => Promise<LoginResponse>;
   register: (params: RegistrationRequestParams) => Promise<RegistrationResponse>;
   logout: () => Promise<void>;
   refreshAuth: () => Promise<void>;
+  /** Manually update the company in context (e.g. after creating or editing) */
+  setUserCompany: (company: Company | null) => void;
 }

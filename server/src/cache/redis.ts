@@ -35,8 +35,10 @@ export const createRedisClient = (env: Environment): Redis => {
       return delay;
     },
     
-    // Key prefix for multi-tenant scenarios
-    keyPrefix: env.NODE_ENV === 'test' ? 'test:' : 'job_board:',
+    // Key prefix — includes a version so bumping CACHE_VERSION immediately
+    // invalidates all cached data when response shapes change.
+    // Increment CACHE_VERSION any time a cached response structure changes.
+    keyPrefix: env.NODE_ENV === 'test' ? 'test:' : `job_board:v2:`,
   };
 
   redis = new Redis(options);

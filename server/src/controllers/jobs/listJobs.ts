@@ -1,28 +1,33 @@
 import { Request, Response } from 'express';
-import { JobsQueryParams } from '../../schemas/jobSchemas';
-import { calculatePagination, calculateOffset } from '../../utils/pagination';
+import { JobsFiltersQuery } from '../../schemas/jobSchemas.js';
+import { searchJobs } from '../../services/JobService/index.js';
 
+/**
+ * List/search jobs with filters
+ * GET /api/jobs
+ */
 export const listJobsController = async (req: Request, res: Response) => {
-  const query = req.query as unknown as JobsQueryParams;
-  const userId = req.user?.id; // Available if user is logged in
+  const query = req.query as unknown as JobsFiltersQuery;
 
-  // TODO: Implement job listing logic
-  // - Build SQL query with filters
-  // - Apply pagination (page, limit)
-  // - Join with companies table
-  // - If userId exists, join with saved_jobs to mark favorites
-  // - Order by created_at DESC
-  // - Use calculateOffset(query.page, query.limit) for SQL OFFSET
-  // - Get total count from database
-  // - Use calculatePagination(query.page, query.limit, total) for response
+  const filters = {
+    search: query.search,
+    location: query.location,
+    job_type: query.job_type as any,
+    remote: query.remote,
+    experience_level: query.experience_level as any,
+    skills: query.skills,
+    salary_min: query.salary_min,
+    salary_max: query.salary_max,
+    company_id: query.company_id,
+    status: (query.status || 'active') as any,
+  };
 
-  const total = 0; // TODO: Get from database COUNT query
-  const offset = calculateOffset(query.page, query.limit);
-  const pagination = calculatePagination(query.page, query.limit, total);
+  const pagination = {
+    page: query.page || 1,
+    limit: query.limit || 20,
+  };
 
-  res.status(200).json({
-    data: [], // TODO: Replace with actual jobs from database
-    pagination,
-    message: 'Job listing endpoint - not yet implemented',
-  });
+  const results = await searchJobs(filters, pagination);
+
+  res.status(200).json(results);
 };

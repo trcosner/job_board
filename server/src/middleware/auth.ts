@@ -175,6 +175,111 @@ export const requireRole = (...allowedRoles: string[]) => {
 };
 
 /**
+ * Require employer user type.
+ * Shorthand for requireUserType('employer').
+ * Must be used AFTER requireAuth.
+ */
+export const requireEmployer = (req: Request, res: Response, next: NextFunction): void => {
+  if (!req.user) {
+    return next(new UnauthorizedError('Authentication required'));
+  }
+  if (req.user.userType !== 'employer') {
+    return next(new ForbiddenError('This action is restricted to employers'));
+  }
+  next();
+};
+
+/**
+ * Require job seeker user type.
+ * Shorthand for requireUserType('job_seeker').
+ * Must be used AFTER requireAuth.
+ */
+export const requireJobSeeker = (req: Request, res: Response, next: NextFunction): void => {
+  if (!req.user) {
+    return next(new UnauthorizedError('Authentication required'));
+  }
+  if (req.user.userType !== 'job_seeker') {
+    return next(new ForbiddenError('This action is restricted to job seekers'));
+  }
+  next();
+};
+
+/**
+ * Require that the employer has completed onboarding (i.e. created their company profile).
+ * Must be used AFTER requireAuth.
+ *
+ * Usage:
+ *   router.post('/jobs', requireAuth(env), requireOnboardingComplete, createJobController)
+ */
+export const requireOnboardingComplete = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  if (!req.user) {
+    return next(new UnauthorizedError('Authentication required'));
+  }
+  if (req.user.userType !== 'employer') {
+    return next(new ForbiddenError('Onboarding applies to employer accounts only'));
+  }
+  try {
+    const { findById } = await import('../repositories/UserRepository/index.js');
+    const user = await findById(req.user.id);
+    if (!user?.onboarding_completed) {
+      return next(
+        new ForbiddenError(
+          'You must complete company onboarding before performing this action'
+        )
+      );
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
+ * Require the authenticated employer to have an associated company.
+ * Must be used AFTER requireAuth / authenticateToken so req.user is populated.
+ *
+ * Usage:
+ *   router.post('/jobs', requireAuth(env), requireCompany, createJobController)
+ */
+export const requireCompany = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  if (!req.user) {
+    return next(new UnauthorizedError('Authentication required'));
+  }
+
+  if (req.user.userType !== 'employer') {
+    return next(new ForbiddenError('Only employers can perform this action'));
+  }
+
+  try {
+    // Lazy import to avoid circular deps at module load time
+    const { findById } = await import('../repositories/UserRepository/index.js');
+    const user = await findById(req.user.id);
+
+    if (!user?.company_id) {
+      return next(
+        new ForbiddenError(
+          'You must create a company profile before performing this action'
+        )
+      );
+    }
+
+    // Attach company_id for downstream use without an extra DB round-trip
+    (req as any).companyId = user.company_id;
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+/**
  * Optional authentication middleware
  * Adds user to request if token is valid, but doesn't require it
  * 

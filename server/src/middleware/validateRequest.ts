@@ -28,9 +28,21 @@ export const validateRequest = (schemas: ValidationSchemas) => {
         if (schema) {
           // Parse and validate the data
           const validatedData = await schema.parseAsync(req[part]);
-          
-          // Replace request data with validated/transformed data
-          (req as any)[part] = validatedData;
+
+          // Replace request data with validated/transformed data.
+          // In Express 5, req.query and req.params are read-only getters on the
+          // prototype, so direct assignment throws a TypeError. Shadow the getter
+          // on the instance itself via Object.defineProperty instead.
+          if (part === 'body') {
+            req.body = validatedData;
+          } else {
+            Object.defineProperty(req, part, {
+              value: validatedData,
+              writable: true,
+              configurable: true,
+              enumerable: true,
+            });
+          }
         }
       }
       

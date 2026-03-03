@@ -1,0 +1,255 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Field wrapper */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.required {
+  color: var(--color-error-600);
+  margin-left: 2px;
+}
+
+.fieldError {
+  font-size: var(--font-size-xs);
+  color: var(--color-error-600);
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  resize: vertical;
+  min-height: 140px;
+  box-sizing: border-box;
+  line-height: var(--line-height-relaxed);
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-500);
+  box-shadow: var(--shadow-focus);
+}
+
+.textarea.textareaError {
+  border-color: var(--color-error-500);
+}
+
+.textarea::placeholder {
+  color: var(--color-text-disabled);
+}
+
+/* Select */
+.select {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  color: var(--color-text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23737373' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-accent-500);
+  box-shadow: var(--shadow-focus);
+}
+
+.select.selectError {
+  border-color: var(--color-error-500);
+}
+
+/* Remote toggle row */
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.toggleLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.toggleSub {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggleTrack {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-primary-300);
+  border-radius: var(--radius-full);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.toggle input:checked + .toggleTrack {
+  background-color: var(--color-accent-600);
+}
+
+.toggleThumb {
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: var(--radius-full);
+  transition: transform var(--transition-fast);
+  pointer-events: none;
+}
+
+.toggle input:checked ~ .toggleThumb {
+  transform: translateX(18px);
+}
+
+/* Skills tag input */
+.skillsInput {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  min-height: 44px;
+  cursor: text;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.skillsInput:focus-within {
+  border-color: var(--color-accent-500);
+  box-shadow: var(--shadow-focus);
+}
+
+.skillTag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  background-color: var(--color-accent-50);
+  border: 1px solid var(--color-accent-200);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-accent-700);
+}
+
+.skillTagRemove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  color: var(--color-accent-500);
+  display: flex;
+  align-items: center;
+}
+
+.skillTagRemove:hover {
+  color: var(--color-error-600);
+}
+
+.skillTagInput {
+  border: none;
+  outline: none;
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  color: var(--color-text-primary);
+  background: transparent;
+  min-width: 120px;
+  flex: 1;
+  padding: 2px var(--space-1);
+}
+
+.skillTagInput::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.skillsHint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--space-1);
+}
+
+/* Section divider */
+.sectionDivider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+}
+
+.draftNote {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  margin-right: auto;
+  align-self: center;
+}

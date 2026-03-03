@@ -1,7 +1,7 @@
 import { TypedRequest, TypedResponse } from '../../types/express.js';
 import { RegistrationResponse } from '../../types/auth.js';
 import { RegisterRequestBody } from '../../schemas/authSchemas.js';
-import { AuthService } from '../../services/index.js';
+import { register } from '../../services/AuthService/index.js';
 
 export const registerController = async (
   req: TypedRequest<RegisterRequestBody>,
@@ -9,8 +9,7 @@ export const registerController = async (
 ) => {
   const { email, password, firstName, lastName, userType } = req.body;
 
-  const authService = new AuthService();
-  const response = await authService.register({
+  const response = await register({
     email,
     password,
     firstName,

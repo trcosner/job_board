@@ -1,7 +1,7 @@
 import { TypedRequest, TypedResponse } from '../../types/express.js';
 import { LoginResponse } from '../../types/auth.js';
 import { LoginRequestBody } from '../../schemas/authSchemas.js';
-import { AuthService } from '../../services/index.js';
+import { login } from '../../services/AuthService/index.js';
 
 export const loginController = async (
   req: TypedRequest<LoginRequestBody>,
@@ -9,8 +9,7 @@ export const loginController = async (
 ) => {
   const { email, password } = req.body;
 
-  const authService = new AuthService();
-  const response = await authService.login({
+  const response = await login({
     email,
     password,
     ipAddress: req.ip,

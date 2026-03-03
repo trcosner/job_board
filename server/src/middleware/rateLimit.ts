@@ -96,10 +96,10 @@ export const authRateLimit = rateLimit({
   message: 'Too many authentication attempts, please try again later'
 });
 
-// Strict endpoints: 3 attempts per hour per email
+// Strict endpoints: 30 attempts per hour per IP (used for token refresh)
 export const strictRateLimit = rateLimit({
-  max: 3,
+  max: 30,
   window: 60 * 60,
-  getKey: getKey.byEmail,
+  getKey: getKey.byIP,
   message: 'Too many requests, please try again later'
 });

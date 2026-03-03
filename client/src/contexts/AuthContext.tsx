@@ -1,6 +1,6 @@
 /**
  * Auth Context - Global authentication state management
- * Uses React Context + useState for simple, production-ready auth
+ * Handles user + employer company state with proper onboarding routing.
  */
 
 'use client';
@@ -15,185 +15,187 @@ import type {
   LoginResponse,
   RegistrationResponse,
 } from '@/types/auth';
-import { post, get } from '@/lib/api';
+import type { Company } from '@/types/company';
+import { post, get, getMyCompany } from '@/lib/api';
+import { ApiError } from '@/lib/api/client';
 import {
   setTokens,
   removeTokens,
   hasAccessToken,
   getAccessToken,
 } from '@/lib/auth-tokens';
-import { API_ENDPOINTS, ROUTES, SUCCESS_MESSAGES } from '@/lib/constants';
-import { trackEvent } from '@/lib/analytics';
-import { AnalyticsEventName } from '@/types/analytics';
+import { API_ENDPOINTS, ROUTES } from '@/lib/constants';
 
-/**
- * Create the Auth Context
- */
 export const AuthContext = createContext<AuthContextState | undefined>(undefined);
 
-/**
- * Auth Provider Props
- */
 interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-/**
- * Auth Provider Component
- * Wraps the app and provides authentication state and methods
- */
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProfile | null>(null);
+  const [userCompany, setUserCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
-  
+
   /**
-   * Load the current user from the API using the stored token
-   * Called on mount if a token exists
+   * Fetch the employer's company. Returns null on 404 or any other error.
+   */
+  const fetchCompany = useCallback(async (): Promise<Company | null> => {
+    try {
+      const { company } = await getMyCompany();
+      return company;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  /**
+   * Load current user (and company, if employer) on mount.
    */
   const loadUser = useCallback(async () => {
-    // Check if we have a token
     if (!hasAccessToken()) {
       setLoading(false);
       return;
     }
-    
+
     try {
-      // Fetch user profile from /auth/me
-      const userData = await get<{ user: UserProfile }>(API_ENDPOINTS.AUTH.ME);
-      setUser(userData.user);
-    } catch (error) {
-      console.error('Failed to load user:', error);
-      // Clear invalid tokens
-      removeTokens();
-      setUser(null);
+      const { user: userData } = await get<{ user: UserProfile }>(API_ENDPOINTS.AUTH.ME);
+      setUser(userData);
+
+      if (userData.userType === 'employer') {
+        const company = await fetchCompany();
+        setUserCompany(company);
+      }
+    } catch (err) {
+      // Only clear tokens on a definitive auth rejection (401).
+      // Transient failures (network error, 429, 500) should not log the user out.
+      const status = err instanceof ApiError ? err.statusCode : null;
+      if (status === 401) {
+        removeTokens();
+        setUser(null);
+        setUserCompany(null);
+      }
     } finally {
       setLoading(false);
     }
-  }, []);
-  
-  /**
-   * Load user on mount if token exists
-   */
+  }, [fetchCompany]);
+
   useEffect(() => {
     loadUser();
   }, [loadUser]);
-  
+
   /**
-   * Refresh auth state (reload user from API)
+   * Refresh auth state (reload user and company from API).
    */
   const refreshAuth = useCallback(async () => {
     if (!hasAccessToken()) {
       setUser(null);
+      setUserCompany(null);
       return;
     }
-    
+
     try {
-      const userData = await get<{ user: UserProfile }>(API_ENDPOINTS.AUTH.ME);
-      setUser(userData.user);
-    } catch (error) {
-      console.error('Failed to refresh auth:', error);
+      const { user: userData } = await get<{ user: UserProfile }>(API_ENDPOINTS.AUTH.ME);
+      setUser(userData);
+
+      if (userData.userType === 'employer') {
+        const company = await fetchCompany();
+        setUserCompany(company);
+      } else {
+        setUserCompany(null);
+      }
+    } catch {
       removeTokens();
       setUser(null);
+      setUserCompany(null);
     }
-  }, []);
-  
+  }, [fetchCompany]);
+
   /**
-   * Login function
-   * @param params - Email and password
+   * Login — stores tokens, loads company for employers, routes appropriately.
    */
-  const login = useCallback(async (params: LoginRequestParams) => {
-    try {
-      // Call login API
-      const response = await post<LoginResponse>(
-        API_ENDPOINTS.AUTH.LOGIN,
-        params,
-        { requiresAuth: false }
-      );
-      
-      // Store tokens
+  const login = useCallback(
+    async (params: LoginRequestParams): Promise<LoginResponse> => {
+      const response = await post<LoginResponse>(API_ENDPOINTS.AUTH.LOGIN, params, {
+        requiresAuth: false,
+      });
+
       setTokens(response.accessToken, response.refreshToken);
-      
-      // Set user state
       setUser(response.user);
-      
-      // Redirect to dashboard
-      router.push(ROUTES.DASHBOARD);
-      
+
+      if (response.user.userType === 'employer') {
+        const company = await fetchCompany();
+        setUserCompany(company);
+        router.push(company ? ROUTES.DASHBOARD : ROUTES.ONBOARDING_COMPANY);
+      } else {
+        setUserCompany(null);
+        router.push(ROUTES.DASHBOARD);
+      }
+
       return response;
-    } catch (error) {
-      console.error('Login failed:', error);
-      throw error;
-    }
-  }, [router]);
-  
+    },
+    [router, fetchCompany]
+  );
+
   /**
-   * Register function
-   * @param params - Registration details
+   * Register — stores tokens, routes employer to onboarding, job seeker to dashboard.
    */
-  const register = useCallback(async (params: RegistrationRequestParams) => {
-    try {
-      // Call register API
+  const register = useCallback(
+    async (params: RegistrationRequestParams): Promise<RegistrationResponse> => {
       const response = await post<RegistrationResponse>(
         API_ENDPOINTS.AUTH.REGISTER,
         params,
         { requiresAuth: false }
       );
-      
-      // Store tokens
+
       setTokens(response.accessToken, response.refreshToken);
-      
-      // Set user state
       setUser(response.user);
-      
-      // Redirect to dashboard
-      router.push(ROUTES.DASHBOARD);
-      
+      setUserCompany(null);
+
+      router.push(
+        response.user.userType === 'employer'
+          ? ROUTES.ONBOARDING_COMPANY
+          : ROUTES.DASHBOARD
+      );
+
       return response;
-    } catch (error) {
-      console.error('Registration failed:', error);
-      throw error;
-    }
-  }, [router]);
-  
+    },
+    [router]
+  );
+
   /**
-   * Logout function
+   * Logout — clears all state and tokens.
    */
   const logout = useCallback(async () => {
     try {
-      // Track logout event
-      trackEvent(AnalyticsEventName.USER_LOGOUT);
-      
-      // Call logout API (best effort - don't block on failure)
       const token = getAccessToken();
       if (token) {
-        await post(API_ENDPOINTS.AUTH.LOGOUT, {}, { requiresAuth: true }).catch(
-          (error) => console.error('Logout API call failed:', error)
-        );
+        await post(API_ENDPOINTS.AUTH.LOGOUT, {}, { requiresAuth: true }).catch(() => {});
       }
-    } catch (error) {
-      console.error('Logout error:', error);
     } finally {
-      // Always clear local state and tokens
       removeTokens();
       setUser(null);
-      
-      // Redirect to home
+      setUserCompany(null);
       router.push(ROUTES.HOME);
     }
   }, [router]);
-  
-  /**
-   * Context value
-   */
+
+  /** True once an employer has a company; always true for job seekers. */
+  const onboardingComplete =
+    user?.userType === 'employer' ? userCompany !== null : true;
+
   const value: AuthContextState = {
     user,
+    userCompany,
+    onboardingComplete,
     loading,
     login,
     register,
     logout,
     refreshAuth,
+    setUserCompany,
   };
-  
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

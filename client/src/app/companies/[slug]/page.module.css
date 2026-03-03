@@ -1,0 +1,321 @@
+/* Public Company Profile Page Styles */
+
+/* ---- Loading / Not Found states ---- */
+.loadingWrapper,
+.notFoundWrapper {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.loadingText {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.notFoundTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.notFoundSubtitle {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.backLink {
+  margin-top: var(--space-2);
+  color: var(--color-primary-600);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+/* ---- Container ---- */
+.container {
+  min-height: calc(100vh - var(--header-height));
+  background-color: var(--color-background);
+}
+
+/* ---- Hero header ---- */
+.hero {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-8) var(--space-4);
+}
+
+.heroInner {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  flex-shrink: 0;
+}
+
+.logoPlaceholder {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-600);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.heroMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.companyName {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.metaList {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.websiteLink {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-600);
+  text-decoration: none;
+}
+
+.websiteLink:hover {
+  text-decoration: underline;
+}
+
+/* Stats bar */
+.statsBar {
+  max-width: var(--container-lg);
+  margin: var(--space-6) auto 0;
+  display: flex;
+  gap: var(--space-8);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-0-5, 0.125rem);
+}
+
+.statValue {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.statLabel {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Body ---- */
+.body {
+  max-width: var(--container-lg);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+/* ---- Section ---- */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.jobCount {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-secondary);
+}
+
+.description {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ---- No Jobs ---- */
+.noJobs {
+  padding: var(--space-8) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.noJobs p {
+  margin: 0 0 var(--space-1) 0;
+}
+
+.noJobsHint {
+  font-size: var(--font-size-sm);
+}
+
+/* ---- Job list ---- */
+.jobList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.jobCard {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.jobCard:hover {
+  border-color: var(--color-primary-300);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.jobLink {
+  display: block;
+  padding: var(--space-4) var(--space-5);
+  text-decoration: none;
+}
+
+.jobHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.jobTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.featuredBadge {
+  display: inline-block;
+  padding: 0.1875rem 0.5rem;
+  background-color: #fef9c3;
+  color: #854d0e;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-full);
+}
+
+.jobMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.jobMetaItem {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Pagination ---- */
+.jobPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+}
+
+.pageBtn {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary-600);
+  background: none;
+  border: 1px solid var(--color-primary-300);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.pageBtn:hover:not(:disabled) {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-500);
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .heroInner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .companyName {
+    font-size: var(--font-size-2xl);
+  }
+
+  .statsBar {
+    gap: var(--space-6);
+  }
+}

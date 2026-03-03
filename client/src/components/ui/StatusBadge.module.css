@@ -1,0 +1,49 @@
+/* StatusBadge Component Styles */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Status variants */
+
+.status-applied {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-reviewing {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+.status-interview {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.status-offer {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-hired {
+  background-color: #bbf7d0;
+  color: #14532d;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-withdrawn {
+  background-color: var(--color-neutral-100, #f5f5f5);
+  color: var(--color-neutral-600, #525252);
+}

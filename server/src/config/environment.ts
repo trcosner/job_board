@@ -26,6 +26,14 @@ const envSchema = z.object({
   RATE_LIMIT_WINDOW_MS: z.coerce.number().default(15 * 60 * 1000), // 15 minutes
   RATE_LIMIT_MAX_REQUESTS: z.coerce.number().default(100),
   
+  // S3 / File Storage
+  S3_BUCKET: z.string().min(3, 'S3 bucket name required'),
+  AWS_REGION: z.string().default('us-east-1'),
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+  S3_ENDPOINT: z.string().url().optional(), // For LocalStack or MinIO
+  S3_PUBLIC_URL: z.string().url().optional(), // For CDN or custom domain
+  
   // Logging level
   LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
 });
@@ -78,6 +86,11 @@ export const getDefaultEnvExample = () => ({
   CORS_ORIGIN: '*',
   RATE_LIMIT_WINDOW_MS: 900000, // 15 minutes
   RATE_LIMIT_MAX_REQUESTS: 100,
+  S3_BUCKET: 'job-board-uploads',
+  AWS_REGION: 'us-east-1',
+  AWS_ACCESS_KEY_ID: 'test', // LocalStack test credentials
+  AWS_SECRET_ACCESS_KEY: 'test', // LocalStack test credentials
+  S3_ENDPOINT: 'http://localhost:4566', // LocalStack endpoint for dev
   LOG_LEVEL: 'info'
 });
 

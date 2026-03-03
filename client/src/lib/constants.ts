@@ -23,11 +23,42 @@ export const API_ENDPOINTS = {
     READINESS: '/health/readiness',
     LIVENESS: '/health/liveness',
   },
-  // Job endpoints (future)
+  // Job endpoints
   JOBS: {
     LIST: '/jobs',
+    MY_JOBS: '/jobs/my-jobs',
     DETAIL: (id: string) => `/jobs/${id}`,
-    APPLY: (id: string) => `/jobs/${id}/apply`,
+    CREATE: '/jobs',
+    UPDATE: (id: string) => `/jobs/${id}`,
+    DELETE: (id: string) => `/jobs/${id}`,
+    STATUS: (id: string) => `/jobs/${id}/status`,
+    APPLY: (jobId: string) => `/jobs/${jobId}/apply`,
+    APPLICATIONS: (jobId: string) => `/jobs/${jobId}/applications`,
+    APPLICATION_STATS: (jobId: string) => `/jobs/${jobId}/applications/stats`,
+  },
+  // Company endpoints
+  COMPANIES: {
+    LIST: '/companies',
+    ME: '/companies/me',
+    BY_SLUG: (slug: string) => `/companies/slug/${slug}`,
+    DETAIL: (id: string) => `/companies/${id}`,
+    CREATE: '/companies',
+    UPDATE: (id: string) => `/companies/${id}`,
+    DELETE: (id: string) => `/companies/${id}`,
+    UPLOAD_LOGO: (id: string) => `/companies/${id}/logo`,
+    JOBS: (id: string) => `/companies/${id}/jobs`,
+    APPLICATIONS: (id: string) => `/companies/${id}/applications`,
+  },
+  // Application endpoints
+  APPLICATIONS: {
+    MY_APPLICATIONS: '/applications/me',
+    MY_STATS: '/applications/stats/me',
+    DETAIL: (id: string) => `/applications/${id}`,
+    HISTORY: (id: string) => `/applications/${id}/history`,
+    RESUME: (id: string) => `/applications/${id}/resume`,
+    UPDATE: (id: string) => `/applications/${id}`,
+    UPDATE_STATUS: (id: string) => `/applications/${id}/status`,
+    WITHDRAW: (id: string) => `/applications/${id}`,
   },
 } as const;
 
@@ -39,9 +70,27 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   DASHBOARD: '/dashboard',
+  ONBOARDING_COMPANY: '/onboarding/company',
   JOBS: '/jobs',
+  JOB: (id: string) => `/jobs/${id}`,
+  /** @deprecated use JOB */
   JOB_DETAIL: (id: string) => `/jobs/${id}`,
+  JOB_APPLY: (id: string) => `/jobs/${id}/apply`,
   PROFILE: '/profile',
+  COMPANY: (slug: string) => `/companies/${slug}`,
+  // Dashboard – employer job management
+  DASHBOARD_JOBS: '/dashboard/jobs',
+  DASHBOARD_JOB_NEW: '/dashboard/jobs/new',
+  DASHBOARD_JOB_EDIT: (id: string) => `/dashboard/jobs/${id}/edit`,
+  DASHBOARD_JOB_APPLICATIONS: (id: string) => `/dashboard/jobs/${id}/applications`,
+  // Dashboard – employer company
+  DASHBOARD_COMPANY: '/dashboard/company',
+  DASHBOARD_COMPANY_EDIT: '/dashboard/company/edit',
+  // Dashboard – job seeker applications
+  DASHBOARD_APPLICATIONS: '/dashboard/applications',
+  DASHBOARD_APPLICATION: (id: string) => `/dashboard/applications/${id}`,
+  // Dashboard – employer company-wide applications
+  DASHBOARD_COMPANY_APPLICATIONS: '/dashboard/applications/all',
 } as const;
 
 /**

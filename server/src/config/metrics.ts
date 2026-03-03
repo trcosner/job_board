@@ -80,26 +80,6 @@ export const rateLimitHits = new Counter({
   labelNames: ['type', 'action'] // type: user/ip/global, action: allowed/blocked
 });
 
-// Analytics metrics
-export const analyticsEventstotal = new Counter({
-  name: 'analytics_events_total',
-  help: 'Total analytics events received',
-  labelNames: ['event_name', 'user_type'] // event_name: page_view/user_register_started/etc, user_type: job_seeker/employer/anonymous
-});
-
-export const clientErrorsTotal = new Counter({
-  name: 'client_errors_total',
-  help: 'Total client-side errors reported',
-  labelNames: ['error_type', 'page'] // error_type: js_error/network_error/etc, page: url path
-});
-
-export const webVitalsMetric = new Histogram({
-  name: 'web_vitals_metric',
-  help: 'Web Vitals performance metrics',
-  labelNames: ['metric_name', 'page'], // metric_name: CLS/FID/FCP/LCP/TTFB/INP
-  buckets: [0.1, 0.25, 0.5, 1, 2.5, 5, 10] // Performance metrics buckets
-});
-
 // Register all custom metrics
 register.registerMetric(httpRequestDuration);
 register.registerMetric(httpRequestTotal);
@@ -111,6 +91,3 @@ register.registerMetric(databaseQueryDuration);
 register.registerMetric(cacheOperations);
 register.registerMetric(cacheOperationDuration);
 register.registerMetric(rateLimitHits);
-register.registerMetric(analyticsEventstotal);
-register.registerMetric(clientErrorsTotal);
-register.registerMetric(webVitalsMetric);

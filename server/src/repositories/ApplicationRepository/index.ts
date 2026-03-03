@@ -1,0 +1,11 @@
+export { findByIdWithDetails } from './findByIdWithDetails.js';
+export { findByJobId } from './findByJobId.js';
+export { findByUserId } from './findByUserId.js';
+export { checkDuplicateApplication, findByUserAndJob } from './applicationLookups.js';
+export { updateStatus } from './updateStatus.js';
+export { searchApplications } from './searchApplications.js';
+export { getJobApplicationStats, getCompanyApplicationStats, getUserApplicationStats } from './applicationStats.js';
+export { findById } from './findById.js';
+export { createApplication } from './createApplication.js';
+export { updateApplication } from './updateApplication.js';
+export { softDelete } from './softDelete.js';

@@ -6,7 +6,8 @@ import authRouter from '../routes/auth';
 import healthRouter from '../routes/health';
 import metricsRouter from '../routes/metrics';
 import jobsRouter from '../routes/jobs';
-import analyticsRouter from '../routes/analytics';
+import companiesRouter from '../routes/companies';
+import applicationsRouter from '../routes/applications';
 import { Environment } from './environment';
 import { metricsMiddleware } from '../middleware/metrics';
 import { sanitizeInput } from '../middleware/validateRequest';
@@ -74,9 +75,8 @@ export const createApp = (env: Environment): express.Application => {
   // API routes
   app.use('/auth', authRouter);
   app.use('/jobs', jobsRouter);
-  app.use('/analytics', analyticsRouter);
-  // app.use('/companies', companiesRouter);
-  // app.use('/users', usersRouter);
+  app.use('/companies', companiesRouter);
+  app.use('/applications', applicationsRouter);
 
   // Catch-all for 404s - Express 5 compatible
   app.use((req, res, next) => {

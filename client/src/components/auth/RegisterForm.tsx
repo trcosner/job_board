@@ -1,8 +1,3 @@
-/**
- * RegisterForm Component
- * Form for new user registration with validation
- */
-
 'use client';
 
 import React, { useState } from 'react';
@@ -12,8 +7,6 @@ import { Input } from '@/components/ui/Input';
 import { Alert } from '@/components/ui/Alert';
 import { validateRegistration } from '@/lib/validation';
 import { ApiError } from '@/lib/api';
-import { trackEvent } from '@/lib/analytics';
-import { AnalyticsEventName } from '@/types/analytics';
 import type { UserType } from '@/types/auth';
 import styles from './RegisterForm.module.css';
 
@@ -35,7 +28,7 @@ export function RegisterForm() {
   /**
    * Handle form submission
    */
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: React.SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     
     // Clear previous errors
@@ -56,14 +49,6 @@ export function RegisterForm() {
       return;
     }
     
-    // Track registration attempt
-    trackEvent(AnalyticsEventName.USER_REGISTER_STARTED, {
-      properties: {
-        userType: userType as UserType,
-        method: 'email'
-      }
-    });
-    
     // Submit registration
     setLoading(true);
     
@@ -76,26 +61,9 @@ export function RegisterForm() {
         userType: userType as UserType,
       });
       
-      // Track successful registration
-      trackEvent(AnalyticsEventName.USER_REGISTER_COMPLETED, {
-        properties: {
-          userType: userType as UserType,
-          method: 'email'
-        }
-      });
-      
       // Success - AuthContext will redirect
     } catch (error) {
       console.error('Registration error:', error);
-      
-      // Track failed registration
-      trackEvent(AnalyticsEventName.USER_REGISTER_FAILED, {
-        properties: {
-          userType: userType as UserType,
-          method: 'email',
-          errorMessage: error instanceof Error ? error.message : 'Unknown error'
-        }
-      });
       
       if (error instanceof ApiError) {
         setApiError(error.message);

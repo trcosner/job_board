@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
 import { ROUTES } from '@/lib/constants';
+import { ArrowRight } from 'lucide-react';
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -18,7 +19,6 @@ export default function Home() {
       <main className={styles.main}>
         {/* Hero Section */}
         <div className={styles.hero}>
-          <div className={styles.heroIcon}>💼</div>
           <h1 className={styles.heroTitle}>
             Find Your Dream Job
           </h1>
@@ -62,7 +62,6 @@ export default function Home() {
         {/* Features Section */}
         <div className={styles.features}>
           <div className={styles.feature}>
-            <div className={styles.featureIcon}>🔍</div>
             <h3 className={styles.featureTitle}>Smart Search</h3>
             <p className={styles.featureText}>
               Find jobs that match your skills, experience, and preferences
@@ -70,7 +69,6 @@ export default function Home() {
           </div>
           
           <div className={styles.feature}>
-            <div className={styles.featureIcon}>🤝</div>
             <h3 className={styles.featureTitle}>Direct Connect</h3>
             <p className={styles.featureText}>
               Connect directly with employers and stand out from the crowd
@@ -78,7 +76,6 @@ export default function Home() {
           </div>
           
           <div className={styles.feature}>
-            <div className={styles.featureIcon}>📈</div>
             <h3 className={styles.featureTitle}>Track Progress</h3>
             <p className={styles.featureText}>
               Monitor your applications and get real-time updates
